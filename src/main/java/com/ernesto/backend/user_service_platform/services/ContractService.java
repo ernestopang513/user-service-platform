@@ -12,7 +12,7 @@ public interface ContractService {
 
     Contract save(CreateContractDto createContractDto);
 
-    Optional<Contract> findById(Long id);
+    Contract findById(Long id);
 
 
     void remove(Long id);

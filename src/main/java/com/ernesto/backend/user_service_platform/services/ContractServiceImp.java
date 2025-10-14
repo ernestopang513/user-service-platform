@@ -11,6 +11,7 @@ import com.ernesto.backend.user_service_platform.entities.Contract;
 import com.ernesto.backend.user_service_platform.entities.ServiceEntity;
 import com.ernesto.backend.user_service_platform.entities.User;
 import com.ernesto.backend.user_service_platform.entities.enums.ContractStatus;
+import com.ernesto.backend.user_service_platform.exceptions.NotFoundException;
 import com.ernesto.backend.user_service_platform.repositories.ContractRepository;
 import com.ernesto.backend.user_service_platform.repositories.ServiceRepository;
 import com.ernesto.backend.user_service_platform.repositories.UserRepository;
@@ -31,10 +32,10 @@ public class ContractServiceImp implements ContractService{
     @Override
     public Contract save(CreateContractDto createContractDto) {
         User user = userRepository.findById(createContractDto.getUserId())
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+            .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
 
         ServiceEntity service = serviceRepository.findById(createContractDto.getServiceId())
-            .orElseThrow(() -> new RuntimeException("Servicio no encontrado"));
+            .orElseThrow(() -> new NotFoundException("Servicio no encontrado"));
 
         Contract contract = new Contract();
         contract.setUser(user);
@@ -45,23 +46,25 @@ public class ContractServiceImp implements ContractService{
     }
 
    
-    @Override
-    public void remove(Long id) {
-        contractRepository.deleteById(id);
-    }
-
+    
     @Override
     public List<Contract> findByUserId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
+        
         return contractRepository.findByUserIdAndStatus(user.getId(), ContractStatus.ACTIVE);
     }
-
+    
     @Override
-    public Optional<Contract> findById(Long id) {
-        return contractRepository.findById(id);
+    public Contract findById(Long id) {
+        return contractRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Contrato no encontrado"));
     }
-
+    
+    @Override
+    public void remove(Long id) {
+        findById(id);
+        contractRepository.deleteById(id);
+    }
 
 
 }
