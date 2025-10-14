@@ -7,10 +7,9 @@ public class UserResponseDto {
     // private String email;
     private boolean active;
 
-    
-
     public UserResponseDto() {
     }
+    
     public UserResponseDto(Long id, String username, boolean active) {
         this.id = id;
         this.username = username;

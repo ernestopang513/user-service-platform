@@ -6,7 +6,9 @@ public class CreateUserDto {
 
     private String password;
 
-    // private String email;
+    private String email;
+
+    private String full_name;
 
     public String getUsername() {
         return username;
@@ -24,13 +26,21 @@ public class CreateUserDto {
         this.password = password;
     }
 
-    // public String getEmail() {
-    //     return email;
-    // }
+    public String getEmail() {
+        return email;
+    }
 
-    // public void setEmail(String email) {
-    //     this.email = email;
-    // }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFull_name() {
+        return full_name;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
+    }
 
     
 
