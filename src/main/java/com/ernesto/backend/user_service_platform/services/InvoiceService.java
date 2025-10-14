@@ -1,17 +1,19 @@
 package com.ernesto.backend.user_service_platform.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.ernesto.backend.user_service_platform.entities.Invoice;
+import com.ernesto.backend.user_service_platform.entities.enums.InvoiceStatus;
 
 public interface InvoiceService {
 
-    List<Invoice> findByUsernameAndStatus(String username);
+    List<Invoice> findByContract_IdAndStatus(Long contractId, InvoiceStatus status);
 
-    Optional<Invoice> save(Invoice invoice);
+    Invoice findById(Long id);
 
-    Optional<Invoice> update(Invoice invoice, Long id);
+    Invoice save(Long contractId);
+
+    Invoice update(Invoice invoice, Long id);
 
     void remove(Long id);
 

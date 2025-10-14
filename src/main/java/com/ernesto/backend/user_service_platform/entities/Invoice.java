@@ -38,6 +38,16 @@ public class Invoice {
         this.issued_at = LocalDateTime.now();
     }
 
+    public Invoice() {
+    }
+
+    public Invoice(Contract contract, BigDecimal amount) {
+        this.contract = contract;
+        this.amount = amount;
+    }
+
+
+
     public Long getId() {
         return id;
     }
