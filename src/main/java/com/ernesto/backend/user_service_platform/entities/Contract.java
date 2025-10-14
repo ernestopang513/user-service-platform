@@ -26,7 +26,7 @@ public class Contract {
     private User user;
 
     @ManyToOne
-    private Service service;
+    private ServiceEntity service;
 
     private LocalDateTime start_date;
 
@@ -58,11 +58,11 @@ public class Contract {
         this.user = user;
     }
 
-    public Service getService() {
+    public ServiceEntity getService() {
         return service;
     }
 
-    public void setService(Service service) {
+    public void setService(ServiceEntity service) {
         this.service = service;
     }
 
