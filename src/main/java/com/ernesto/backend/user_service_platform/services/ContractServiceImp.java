@@ -1,7 +1,6 @@
 package com.ernesto.backend.user_service_platform.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

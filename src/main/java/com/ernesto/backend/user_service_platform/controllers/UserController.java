@@ -1,7 +1,6 @@
 package com.ernesto.backend.user_service_platform.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,29 +34,23 @@ public class UserController {
     
     @GetMapping("/{id}")
     public ResponseEntity<?> show(@PathVariable Long id) {
-        Optional<User> userOptional = userService.findById(id);
-        if (userOptional.isPresent()) {
-            return ResponseEntity.ok(userOptional.orElseThrow());
-        }
-
-        return ResponseEntity.notFound().build();
-        
+        User user = userService.findById(id);
+            return ResponseEntity.ok(user);
     }
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody CreateUserDto createUserDto) {
-        Optional<User> userOpt = userService.save(createUserDto);
-        if(userOpt.isPresent()) {
+        User user = userService.save(createUserDto);
 
-            UserResponseDto user = new UserResponseDto(
-                userOpt.get().getId(),
-                userOpt.get().getUsername(),
-                userOpt.get().isActive()
+        //* Se puede poner un MapStruct o ModelMapper para no contruir manualmente user resp dto
+
+            UserResponseDto newUser = new UserResponseDto(
+                user.getId(),
+                user.getUsername(),
+                user.isActive()
             );
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(user);
-        }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("El nombre de usuario ya esta en uso.");
+            return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @PostMapping("/register")
@@ -66,23 +59,17 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody CreateUserDto user, @PathVariable Long id) {
-        Optional<User> o = userService.update(user, id);
-        if(o.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(o.orElseThrow());
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<?> update(@RequestBody CreateUserDto createUserDto, @PathVariable Long id) {
+        User user = userService.update(createUserDto, id);
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable Long id) {
-        Optional<User> o = userService.findById(id);
-        if(o.isPresent()) {
             userService.remove(id);
             return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.noContent().build();
     }
 
 }

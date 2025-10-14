@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +14,8 @@ import com.ernesto.backend.user_service_platform.dtos.user.CreateUserDto;
 import com.ernesto.backend.user_service_platform.dtos.user.UserResponseDto;
 import com.ernesto.backend.user_service_platform.entities.Role;
 import com.ernesto.backend.user_service_platform.entities.User;
+import com.ernesto.backend.user_service_platform.exceptions.BadRequestException;
+import com.ernesto.backend.user_service_platform.exceptions.NotFoundException;
 import com.ernesto.backend.user_service_platform.repositories.RoleRepository;
 import com.ernesto.backend.user_service_platform.repositories.UserRepository;
 
@@ -46,12 +47,12 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public Optional<User> save(CreateUserDto createUserDto) {
+    public User save(CreateUserDto createUserDto) {
 
 
 
         if( existsByUsername(createUserDto.getUsername() ) ) {
-            return Optional.empty();
+            throw new BadRequestException("El nombre de usuario ya está en uso");
         }
 
         Optional<Role> optRoleUser = roleRepository.findByName("ROLE_USER");
@@ -62,16 +63,12 @@ public class UserServiceImp implements UserService {
         User user = new User();
 
         user.setUsername(createUserDto.getUsername());
-        // user.setUsername(createUserDto.getEmail());
+        user.setEmail(createUserDto.getEmail());
+        user.setFull_name(createUserDto.getFull_name());
         user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
         user.setRoles(roles);
 
-        try {
-            return Optional.of(userRepository.save(user));
-        } catch (DataIntegrityViolationException e) {
-            return Optional.empty();
-        }
-
+        return userRepository.save(user);
     }
 
     @Override
@@ -81,26 +78,31 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public User findById(Long id) {
+        return userRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
     }
 
     
     @Override
-    public Optional<User> update(CreateUserDto user, Long id) {
-        Optional<User> o = findById(id);
-        User userOptional = null;
-        if (o.isPresent()) {
-            User userDB = o.orElseThrow();
-            userDB.setUsername(user.getUsername());
-            userOptional = userRepository.save(userDB);
+    public User update(CreateUserDto createUserDto, Long id) {
+
+        if( existsByUsername(createUserDto.getUsername() ) ) {
+            throw new BadRequestException("El nombre de usuario ya está en uso");
         }
-        return Optional.ofNullable(userOptional);
+
+        User user = findById(id);
+
+        user.setUsername(createUserDto.getUsername());
+
+        return userRepository.save(user);
+        
     }
     
     
     @Override
     public void remove(Long id) {
+        findById(id);
         userRepository.deleteById(id);
     }
     
