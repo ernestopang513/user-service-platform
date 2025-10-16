@@ -21,3 +21,17 @@ INSERT IGNORE INTO user_roles (user_id, role_id)
 SELECT u.id, r.id
 FROM users u, roles r
 WHERE u.username = 'admin' AND r.name = 'ROLE_USER';
+
+
+-- Insertar servicios
+INSERT INTO services (name, price, active)
+VALUES ('Telefonia', 290.99, true)
+ON DUPLICATE KEY UPDATE
+    price = VALUES(price),
+    active = VALUES(active);
+
+INSERT INTO services (name, price, active)
+VALUES ('Internet', 490.99, true)
+ON DUPLICATE KEY UPDATE
+    price = VALUES(price),
+    active = VALUES(active);
