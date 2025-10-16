@@ -8,7 +8,7 @@ import com.ernesto.backend.user_service_platform.entities.ServiceEntity;
 
 public interface ServiceService {
 
-    List<ServiceEntity> findAll();
+    List<ServiceEntity> findAll(Boolean active);
 
     ServiceEntity save(CreateServiceDto createServiceDto);
 
@@ -17,5 +17,7 @@ public interface ServiceService {
     ServiceEntity update(UpdateServiceDto service, Long id);
 
     void remove(Long id);
+
+    void deactivate(Long id);
 
 }

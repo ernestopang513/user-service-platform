@@ -58,6 +58,21 @@ public class ContractServiceImp implements ContractService{
         return contractRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Contrato no encontrado"));
     }
+
+    @Override
+    public Contract update(Long id, ContractStatus contractStatus) {
+
+        if( !contractRepository.existsById(id)) {
+            throw new NotFoundException("Contrato no encontrado");
+        }
+
+        Contract contract = findById(id);
+
+        contract.setStatus(contractStatus);
+
+        return contractRepository.save(contract);
+
+    }
     
     @Override
     public void remove(Long id) {

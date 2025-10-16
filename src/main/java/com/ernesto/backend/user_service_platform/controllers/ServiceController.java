@@ -3,12 +3,14 @@ package com.ernesto.backend.user_service_platform.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ernesto.backend.user_service_platform.dtos.service.CreateServiceDto;
@@ -25,8 +27,10 @@ public class ServiceController {
     private ServiceService serviceService;
 
     @GetMapping()
-    public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(serviceService.findAll());
+    public ResponseEntity<?> findAll(
+        @RequestParam(required = false) boolean active
+    ) {
+        return ResponseEntity.ok(serviceService.findAll(active));
     }
     
 
@@ -48,8 +52,20 @@ public class ServiceController {
         ServiceEntity service = serviceService.update(updateSerciveDto, id);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(service);
-
-
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> remove(@PathVariable Long id) {
+        serviceService.remove(id);
+        return ResponseEntity.noContent().build(); 
+    }
+
+    @PatchMapping("/{id}/desactivate")
+    public ResponseEntity<?> desactivate(@PathVariable Long id) {
+        serviceService.deactivate(id);
+        return ResponseEntity.noContent().build();
+    }
+    
+    
 
 }

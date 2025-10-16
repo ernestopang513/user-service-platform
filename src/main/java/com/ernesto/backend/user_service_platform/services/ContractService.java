@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ernesto.backend.user_service_platform.dtos.contract.CreateContractDto;
 import com.ernesto.backend.user_service_platform.entities.Contract;
+import com.ernesto.backend.user_service_platform.entities.enums.ContractStatus;
 
 public interface ContractService {
 
@@ -13,6 +14,7 @@ public interface ContractService {
 
     Contract findById(Long id);
 
+    Contract update(Long id, ContractStatus contractStatus);
 
     void remove(Long id);
 

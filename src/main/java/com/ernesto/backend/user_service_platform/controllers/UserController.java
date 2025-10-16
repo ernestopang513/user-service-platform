@@ -1,6 +1,5 @@
 package com.ernesto.backend.user_service_platform.controllers;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,31 +25,24 @@ public class UserController {
     @Autowired
     private UserServiceImp userService;
 
-
     @GetMapping
-    public List<UserResponseDto> list() {
-        return userService.findAll();
-    }
-    
-    @GetMapping("/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id) {
-        User user = userService.findById(id);
-            return ResponseEntity.ok(user);
+    public ResponseEntity<?> list() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody CreateUserDto createUserDto) {
         User user = userService.save(createUserDto);
 
-        //* Se puede poner un MapStruct o ModelMapper para no contruir manualmente user resp dto
+        // * Se puede poner un MapStruct o ModelMapper para no contruir manualmente user
+        // resp dto
 
-            UserResponseDto newUser = new UserResponseDto(
+        UserResponseDto newUser = new UserResponseDto(
                 user.getId(),
                 user.getUsername(),
-                user.isActive()
-            );
+                user.isActive());
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
     @PostMapping("/register")
@@ -58,18 +50,23 @@ public class UserController {
         return create(createUserDto);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> show(@PathVariable Long id) {
+        User user = userService.findById(id);
+        return ResponseEntity.ok(user);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@RequestBody CreateUserDto createUserDto, @PathVariable Long id) {
         User user = userService.update(createUserDto, id);
-        
+
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable Long id) {
-            userService.remove(id);
-            return ResponseEntity.noContent().build();
+        userService.remove(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

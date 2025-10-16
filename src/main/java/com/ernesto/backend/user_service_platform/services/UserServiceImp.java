@@ -72,6 +72,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsername(username);
     }
@@ -85,6 +86,7 @@ public class UserServiceImp implements UserService {
 
     
     @Override
+    @Transactional
     public User update(CreateUserDto createUserDto, Long id) {
 
         if( existsByUsername(createUserDto.getUsername() ) ) {
@@ -101,6 +103,7 @@ public class UserServiceImp implements UserService {
     
     
     @Override
+    @Transactional
     public void remove(Long id) {
         findById(id);
         userRepository.deleteById(id);
