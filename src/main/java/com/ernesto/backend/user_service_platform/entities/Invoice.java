@@ -27,6 +27,7 @@ public class Invoice {
     @ManyToOne
     private Contract contract;
 
+    @Column(nullable = false)
     private BigDecimal amount;
 
     private LocalDateTime issued_at;
