@@ -47,8 +47,8 @@ public class UserServiceImp implements UserService {
     @Transactional
     public User save(CreateUserDto createUserDto) {
 
-        if (existsByUsername(createUserDto.getUsername())) {
-            throw new BadRequestException("El nombre de usuario ya está en uso");
+        if (existsByUsername(createUserDto.getUsername()) ||  userRepository.existsByEmail(createUserDto.getEmail())) {
+            throw new BadRequestException("El nombre de usuario o correo ya estan en uso");
         }
 
         Optional<Role> optRoleUser = roleRepository.findByName("ROLE_USER");
@@ -70,8 +70,8 @@ public class UserServiceImp implements UserService {
     @Transactional
     public User saveAdmin(CreateUserDto createUserDto) {
 
-        if (existsByUsername(createUserDto.getUsername())) {
-            throw new BadRequestException("El nombre de usuario ya está en uso");
+        if (existsByUsername(createUserDto.getUsername()) ||  userRepository.existsByEmail(createUserDto.getEmail())) {
+            throw new BadRequestException("El nombre de usuario o correo ya estan en uso");
         }
 
         Optional<Role> optRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
