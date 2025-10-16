@@ -32,36 +32,53 @@ public class UserServiceImp implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional(readOnly= true)
+    @Transactional(readOnly = true)
     public List<UserResponseDto> findAll() {
         return userRepository.findAll()
-            .stream()
-            .map(user -> new UserResponseDto(
-                user.getId(),
-                user.getUsername(),
-                user.isActive()
-            ))
-            .collect(Collectors.toList());
+                .stream()
+                .map(user -> new UserResponseDto(
+                        user.getId(),
+                        user.getUsername(),
+                        user.isActive()))
+                .collect(Collectors.toList());
     }
-
 
     @Override
     @Transactional
     public User save(CreateUserDto createUserDto) {
 
-
-
-        if( existsByUsername(createUserDto.getUsername() ) ) {
+        if (existsByUsername(createUserDto.getUsername())) {
             throw new BadRequestException("El nombre de usuario ya está en uso");
         }
 
         Optional<Role> optRoleUser = roleRepository.findByName("ROLE_USER");
-        List<Role> roles = new ArrayList<>(); 
+        List<Role> roles = new ArrayList<>();
 
         optRoleUser.ifPresent(roles::add);
 
         User user = new User();
 
+        user.setUsername(createUserDto.getUsername());
+        user.setEmail(createUserDto.getEmail());
+        user.setFull_name(createUserDto.getFull_name());
+        user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
+        user.setRoles(roles);
+
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public User saveAdmin(CreateUserDto createUserDto) {
+
+        if (existsByUsername(createUserDto.getUsername())) {
+            throw new BadRequestException("El nombre de usuario ya está en uso");
+        }
+
+        Optional<Role> optRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
+        List<Role> roles = new ArrayList<>();
+        optRoleAdmin.ifPresent(roles::add);
+
+        User user = new User();
         user.setUsername(createUserDto.getUsername());
         user.setEmail(createUserDto.getEmail());
         user.setFull_name(createUserDto.getFull_name());
@@ -81,15 +98,14 @@ public class UserServiceImp implements UserService {
     @Transactional(readOnly = true)
     public User findById(Long id) {
         return userRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
     }
 
-    
     @Override
     @Transactional
     public User update(CreateUserDto createUserDto, Long id) {
 
-        if( existsByUsername(createUserDto.getUsername() ) ) {
+        if (existsByUsername(createUserDto.getUsername())) {
             throw new BadRequestException("El nombre de usuario ya está en uso");
         }
 
@@ -98,15 +114,14 @@ public class UserServiceImp implements UserService {
         user.setUsername(createUserDto.getUsername());
 
         return userRepository.save(user);
-        
+
     }
-    
-    
+
     @Override
     @Transactional
     public void remove(Long id) {
         findById(id);
         userRepository.deleteById(id);
     }
-    
+
 }

@@ -1,13 +1,21 @@
 package com.ernesto.backend.user_service_platform.dtos.user;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class CreateUserDto {
 
+    @NotBlank(message = "El username es obligatorio")
     private String username;
 
+    @NotBlank
     private String password;
 
+    @NotBlank
+    @Email
     private String email;
 
+    @NotBlank
     private String full_name;
 
     public String getUsername() {

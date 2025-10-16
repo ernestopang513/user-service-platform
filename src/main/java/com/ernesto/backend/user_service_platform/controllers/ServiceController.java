@@ -3,6 +3,7 @@ package com.ernesto.backend.user_service_platform.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,9 +19,14 @@ import com.ernesto.backend.user_service_platform.dtos.service.UpdateServiceDto;
 import com.ernesto.backend.user_service_platform.entities.ServiceEntity;
 import com.ernesto.backend.user_service_platform.services.ServiceService;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 
 @RestController
 @RequestMapping("/api/services")
+@Validated
 public class ServiceController {
 
     @Autowired
@@ -35,19 +41,19 @@ public class ServiceController {
     
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
+    public ResponseEntity<?> findById(@PathVariable @NotNull @Min(value=1) Long id) {
         ServiceEntity service = serviceService.findById(id);
         return ResponseEntity.ok(service);
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody CreateServiceDto createServiceDto) {
+    public ResponseEntity<?> create(@RequestBody @Valid CreateServiceDto createServiceDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceService.save(createServiceDto));
     }
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody UpdateServiceDto updateSerciveDto, @PathVariable Long id) {
+    public ResponseEntity<?> update(@RequestBody @Valid UpdateServiceDto updateSerciveDto, @PathVariable Long id) {
 
         ServiceEntity service = serviceService.update(updateSerciveDto, id);
 
@@ -55,13 +61,13 @@ public class ServiceController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> remove(@PathVariable Long id) {
+    public ResponseEntity<?> remove(@PathVariable @NotNull @Min(value=1) Long id) {
         serviceService.remove(id);
         return ResponseEntity.noContent().build(); 
     }
 
     @PatchMapping("/{id}/desactivate")
-    public ResponseEntity<?> desactivate(@PathVariable Long id) {
+    public ResponseEntity<?> desactivate(@PathVariable @NotNull @Min(value=1) Long id) {
         serviceService.deactivate(id);
         return ResponseEntity.noContent().build();
     }
