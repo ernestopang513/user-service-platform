@@ -20,6 +20,16 @@ public class ServiceEntity {
 
     private boolean active = true;
 
+    
+
+
+    public ServiceEntity() {
+    }
+
+    public ServiceEntity(String name, BigDecimal price) {
+        this.name = name;
+        this.price = price;
+    }
 
     public Long getId() {
         return id;
