@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,8 @@ public class InvoiceController {
     private InvoiceMapper invoiceMapper;
 
     @GetMapping("/{contractId}/all")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    // @PostFilter("hasRole('ADMIN') or filterObject.contract.user.username == authentication.name")
     public ResponseEntity<List<InvoiceDto>> findByContractAndStatus(
         @PathVariable @NotNull @Min(value=1) Long contractId,
         @RequestParam(required = false) InvoiceStatus status
@@ -48,6 +51,8 @@ public class InvoiceController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    // @PostAuthorize("hasRole('ADMIN') or returnObject.contract.user.username == authentication.name")
     public ResponseEntity<InvoiceDto> findById(@PathVariable @NotNull @Min(value=1) Long id) {
         Invoice invoice = invoiceService.findById(id);
         InvoiceDto invoiceResonse = invoiceMapper.toDto(invoice);
@@ -56,11 +61,13 @@ public class InvoiceController {
     }
 
     @PostMapping("/contracts/{contractId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<InvoiceDto> create(@PathVariable @NotNull @Min(value=1) Long contractId) {
         return ResponseEntity.status(HttpStatus.CREATED).body(invoiceMapper.toDto(invoiceService.save(contractId)));
     }
 
     @PatchMapping("/{id}/pay")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<?> payInvoice(@PathVariable @NotNull @Min(value = 1) Long id ) {
         Invoice invoice = invoiceService.payInvoice(id);
         InvoiceDto invoiceResp = invoiceMapper.toDto(invoice);
@@ -69,6 +76,7 @@ public class InvoiceController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> remove(@PathVariable @NotNull @Min(value=1) Long id) {
         invoiceService.remove(id);
         return ResponseEntity.noContent().build();
