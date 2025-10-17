@@ -1,12 +1,16 @@
 package com.ernesto.backend.user_service_platform.entities;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,8 +29,8 @@ public class ServiceEntity {
 
     private boolean active = true;
 
-    
-
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contract> contracts = new ArrayList<>();
 
     public ServiceEntity() {
     }
@@ -67,7 +71,5 @@ public class ServiceEntity {
     public void setActive(boolean active) {
         this.active = active;
     }
-
-    
 
 }

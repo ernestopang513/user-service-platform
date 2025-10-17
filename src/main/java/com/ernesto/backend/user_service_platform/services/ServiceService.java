@@ -18,6 +18,6 @@ public interface ServiceService {
 
     void remove(Long id);
 
-    void deactivate(Long id);
+    void deactivate(Long id, boolean active);
 
 }

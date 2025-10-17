@@ -73,9 +73,9 @@ public class ServiceEntityServiceImp implements ServiceService {
     }
 
     @Transactional(readOnly = false)
-    public void deactivate(Long id) {
+    public void deactivate(Long id, boolean active) {
         ServiceEntity service =findById(id);
-        service.setActive(false);
+        service.setActive(active);
         serviceRepository.save(service);
     }
 

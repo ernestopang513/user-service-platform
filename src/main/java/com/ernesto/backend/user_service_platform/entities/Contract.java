@@ -4,9 +4,11 @@ import java.time.LocalDateTime;
 
 
 import com.ernesto.backend.user_service_platform.entities.enums.ContractStatus;
+import com.ernesto.backend.user_service_platform.listeners.ContractListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +19,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
+@EntityListeners(ContractListener.class)
 @Table(name = "contracts")
 public class Contract {
 

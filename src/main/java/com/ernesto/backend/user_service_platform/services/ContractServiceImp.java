@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ernesto.backend.user_service_platform.dtos.contract.CreateContractDto;
+import com.ernesto.backend.user_service_platform.dtos.contract.UpdateContractStatusDto;
 import com.ernesto.backend.user_service_platform.entities.Contract;
 import com.ernesto.backend.user_service_platform.entities.ServiceEntity;
 import com.ernesto.backend.user_service_platform.entities.User;
@@ -60,7 +61,7 @@ public class ContractServiceImp implements ContractService{
     }
 
     @Override
-    public Contract update(Long id, ContractStatus contractStatus) {
+    public Contract update(Long id, UpdateContractStatusDto status) {
 
         if( !contractRepository.existsById(id)) {
             throw new NotFoundException("Contrato no encontrado");
@@ -68,7 +69,7 @@ public class ContractServiceImp implements ContractService{
 
         Contract contract = findById(id);
 
-        contract.setStatus(contractStatus);
+        contract.setStatus(status.getStatus());
 
         return contractRepository.save(contract);
 

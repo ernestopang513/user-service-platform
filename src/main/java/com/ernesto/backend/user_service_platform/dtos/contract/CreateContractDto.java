@@ -13,8 +13,7 @@ public class CreateContractDto {
     @Min(value=1, message = "Debe ser >= 1")
     private Long serviceId;
 
-    @NotNull
-    @Min(value=1, message = "Debe ser >= 1")
+   
     public Long getUserId() {
         return userId;
     }

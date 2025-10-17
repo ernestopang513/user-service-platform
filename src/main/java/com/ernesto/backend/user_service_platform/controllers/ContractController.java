@@ -1,6 +1,7 @@
 package com.ernesto.backend.user_service_platform.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ernesto.backend.user_service_platform.dtos.contract.ContractDto;
 import com.ernesto.backend.user_service_platform.dtos.contract.CreateContractDto;
+import com.ernesto.backend.user_service_platform.dtos.contract.UpdateContractStatusDto;
 import com.ernesto.backend.user_service_platform.entities.Contract;
-import com.ernesto.backend.user_service_platform.entities.enums.ContractStatus;
+import com.ernesto.backend.user_service_platform.mapper.ContractMapper;
 import com.ernesto.backend.user_service_platform.services.ContractService;
 
 import jakarta.validation.Valid;
@@ -32,31 +35,38 @@ public class ContractController {
     @Autowired
     private ContractService contractService;
 
+    @Autowired 
+    private ContractMapper contractMapper;
+
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody CreateContractDto createContractDto) {
         Contract contract = contractService.save(createContractDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(contract);
+        ContractDto response = contractMapper.toDto(contract);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable @NotNull @Min(value = 1) Long id) {
+    public ResponseEntity<ContractDto> findById(@PathVariable @NotNull @Min(value = 1) Long id) {
         Contract contract = contractService.findById(id);
-        return ResponseEntity.ok(contract);
+        ContractDto response = contractMapper.toDto(contract);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Contract>> findByUserId(@PathVariable @NotNull @Min(value = 1) Long userId) {
+    public ResponseEntity<List<ContractDto>> findByUserId(@PathVariable @NotNull @Min(value = 1) Long userId) {
         List<Contract> contracts = contractService.findByUserId(userId);
-        return ResponseEntity.ok(contracts);
+        List<ContractDto> contractsResponse = contracts.stream().map(contractMapper::toDto).collect(Collectors.toList());
+        return ResponseEntity.ok(contractsResponse);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> update(
         @PathVariable @NotNull @Min(value = 1) Long id,
-        @RequestBody @Valid ContractStatus contractStatus
+        @RequestBody @Valid UpdateContractStatusDto status
         ) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(contractService.update(id, contractStatus));
+            Contract contract = contractService.update(id, status);
+            return ResponseEntity.status(HttpStatus.CREATED).body(contractMapper.toDto(contract));
         }
 
 

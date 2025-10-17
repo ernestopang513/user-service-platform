@@ -34,7 +34,7 @@ public class ServiceController {
 
     @GetMapping()
     public ResponseEntity<?> findAll(
-        @RequestParam(required = false) boolean active
+        @RequestParam(required = false) Boolean active
     ) {
         return ResponseEntity.ok(serviceService.findAll(active));
     }
@@ -67,8 +67,11 @@ public class ServiceController {
     }
 
     @PatchMapping("/{id}/desactivate")
-    public ResponseEntity<?> desactivate(@PathVariable @NotNull @Min(value=1) Long id) {
-        serviceService.deactivate(id);
+    public ResponseEntity<?> desactivate(
+        @PathVariable @NotNull @Min(value=1) Long id,
+        @RequestParam(required = false) boolean active
+        ) {
+        serviceService.deactivate(id, active);
         return ResponseEntity.noContent().build();
     }
     
