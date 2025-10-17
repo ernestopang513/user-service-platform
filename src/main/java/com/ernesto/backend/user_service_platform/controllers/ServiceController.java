@@ -73,7 +73,7 @@ public class ServiceController {
     }
 
     @PatchMapping("/{id}/desactivate")
-    @PreAuthorize("hasROle('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> desactivate(
         @PathVariable @NotNull @Min(value=1) Long id,
         @RequestParam(required = false) boolean active
