@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,7 @@ public class ContractController {
     private ContractMapper contractMapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<?> create(@Valid @RequestBody CreateContractDto createContractDto) {
         Contract contract = contractService.save(createContractDto);
         ContractDto response = contractMapper.toDto(contract);
@@ -47,6 +49,7 @@ public class ContractController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<ContractDto> findById(@PathVariable @NotNull @Min(value = 1) Long id) {
         Contract contract = contractService.findById(id);
         ContractDto response = contractMapper.toDto(contract);
@@ -54,6 +57,7 @@ public class ContractController {
     }
 
     @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public ResponseEntity<List<ContractDto>> findByUserId(@PathVariable @NotNull @Min(value = 1) Long userId) {
         List<Contract> contracts = contractService.findByUserId(userId);
         List<ContractDto> contractsResponse = contracts.stream().map(contractMapper::toDto).collect(Collectors.toList());
@@ -61,6 +65,7 @@ public class ContractController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(
         @PathVariable @NotNull @Min(value = 1) Long id,
         @RequestBody @Valid UpdateContractStatusDto status
@@ -71,6 +76,7 @@ public class ContractController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> remove(@PathVariable @Min(value = 1) @NotNull Long id) {
         contractService.remove(id);
         return ResponseEntity.noContent().build();
