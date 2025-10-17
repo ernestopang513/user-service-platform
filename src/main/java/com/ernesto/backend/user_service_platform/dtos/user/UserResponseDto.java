@@ -7,14 +7,19 @@ public class UserResponseDto {
     // private String email;
     private boolean active;
 
+    private String full_name;
+
+
+
     public UserResponseDto() {
     }
     
-    public UserResponseDto(Long id, String username, boolean active) {
+    public UserResponseDto(Long id, String username, boolean active, String full_name) {
         this.id = id;
         this.username = username;
         // this.email = email;
         this.active = active;
+        this.full_name = full_name;
     }
     public Long getId() {
         return id;
@@ -39,6 +44,14 @@ public class UserResponseDto {
     }
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getFull_name() {
+        return full_name;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
     }
 
     

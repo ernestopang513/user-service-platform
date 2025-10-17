@@ -3,7 +3,6 @@ package com.ernesto.backend.user_service_platform.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ernesto.backend.user_service_platform.dtos.user.CreateUserDto;
-import com.ernesto.backend.user_service_platform.dtos.user.UserResponseDto;
 import com.ernesto.backend.user_service_platform.entities.Role;
 import com.ernesto.backend.user_service_platform.entities.User;
 import com.ernesto.backend.user_service_platform.exceptions.BadRequestException;
@@ -33,14 +31,8 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserResponseDto> findAll() {
-        return userRepository.findAll()
-                .stream()
-                .map(user -> new UserResponseDto(
-                        user.getId(),
-                        user.getUsername(),
-                        user.isActive()))
-                .collect(Collectors.toList());
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     @Override

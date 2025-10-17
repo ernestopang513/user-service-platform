@@ -3,12 +3,11 @@ package com.ernesto.backend.user_service_platform.services;
 import java.util.List;
 
 import com.ernesto.backend.user_service_platform.dtos.user.CreateUserDto;
-import com.ernesto.backend.user_service_platform.dtos.user.UserResponseDto;
 import com.ernesto.backend.user_service_platform.entities.User;
 
 public interface UserService {
 
-    List<UserResponseDto> findAll();
+    List<User> findAll();
 
     User save(CreateUserDto user);
 

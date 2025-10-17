@@ -19,7 +19,6 @@ public class InvoiceServiceImp implements InvoiceService {
     @Autowired
     private InvoiceRepository invoiceRepository;
 
-
     @Autowired
     private ContractRepository contractRepository;
 
