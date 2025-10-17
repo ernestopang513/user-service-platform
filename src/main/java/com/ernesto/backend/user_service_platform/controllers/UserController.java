@@ -75,6 +75,7 @@ public class UserController {
         return create(createUserDto);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> show(@PathVariable @NotNull @Min(value=1) Long id) {
         User user = userService.findById(id);
@@ -82,6 +83,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> update(@RequestBody @Valid CreateUserDto createUserDto, @PathVariable @NotNull @Min(value=1) Long id) {
         User user = userService.update(createUserDto, id);
 
@@ -89,6 +91,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> remove(@PathVariable @NotNull @Min(value=1) Long id) {
         userService.remove(id);
         return ResponseEntity.noContent().build();
