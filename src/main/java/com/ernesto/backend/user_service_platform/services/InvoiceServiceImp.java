@@ -38,10 +38,10 @@ public class InvoiceServiceImp implements InvoiceService {
     @Override
     public Invoice save(Long contracId) {
 
-        BigDecimal amount = new BigDecimal(500);
-
         Contract contract = contractRepository.findById(contracId)
             .orElseThrow(() -> new NotFoundException("Contrato no entontrado"));
+
+        BigDecimal amount = contract.getService().getPrice();
 
         Invoice invoice = new Invoice(contract, amount);
 
