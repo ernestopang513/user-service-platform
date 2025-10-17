@@ -49,7 +49,7 @@ public class ContractServiceImp implements ContractService{
     
     @Override
     public List<Contract> findByUserId(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
         
         return contractRepository.findByUserIdAndStatus(user.getId(), ContractStatus.ACTIVE);
     }
