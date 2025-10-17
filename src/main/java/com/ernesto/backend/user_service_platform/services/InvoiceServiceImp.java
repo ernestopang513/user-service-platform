@@ -60,8 +60,13 @@ public class InvoiceServiceImp implements InvoiceService {
         invoiceDb.setAmount(invoice.getAmount());
 
         return invoiceRepository.save(invoiceDb);
+    }
 
-
+    @Override
+    public Invoice payInvoice(Long id) {
+        Invoice invoice = findById(id);
+        invoice.setStatus(InvoiceStatus.PAID);
+        return invoiceRepository.save(invoice);
     }
 
     @Override

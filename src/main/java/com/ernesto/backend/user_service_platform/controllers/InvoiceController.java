@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,6 +60,13 @@ public class InvoiceController {
         return ResponseEntity.status(HttpStatus.CREATED).body(invoiceMapper.toDto(invoiceService.save(contractId)));
     }
 
+    @PatchMapping("/{id}/pay")
+    public ResponseEntity<?> payInvoice(@PathVariable @NotNull @Min(value = 1) Long id ) {
+        Invoice invoice = invoiceService.payInvoice(id);
+        InvoiceDto invoiceResp = invoiceMapper.toDto(invoice);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(invoiceResp);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable @NotNull @Min(value=1) Long id) {
@@ -66,6 +74,6 @@ public class InvoiceController {
         return ResponseEntity.noContent().build();
     }
 
-    //Todo Metodo que simula el pago
+    
 
 }
