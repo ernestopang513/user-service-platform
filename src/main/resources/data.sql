@@ -3,7 +3,7 @@ INSERT IGNORE INTO roles (name) VALUES ('ROLE_ADMIN');
 
 
 INSERT INTO users (username, password, email, full_name, created_at, active)
-VALUES ('admin', '$2a$10$eB6GqfWlS9wH0x0rVuvM/.R9vDqwVQJH0yz.ZxvF2ka.YiA7J0b1y',
+VALUES ('admin', '$2a$10$/Fgv0c8aS9F2pLzdyxmO5egm451rZwIq5trfKZ9bGqfL6a5TlGIa6',
         'admin@example.com', 'Administrador', NOW(), true)
 ON DUPLICATE KEY UPDATE
     password = VALUES(password),
