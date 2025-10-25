@@ -15,6 +15,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.ernesto.backend.user_service_platform.entities.Role;
 import com.ernesto.backend.user_service_platform.entities.User;
 import com.ernesto.backend.user_service_platform.repositories.UserRepository;
 import com.fasterxml.jackson.core.exc.StreamReadException;
@@ -39,6 +40,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
+        setFilterProcessesUrl("/api/auth/login");
     }
 
     @Override
@@ -82,8 +84,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 Map<String, Object> userData = Map.of(
                     "id", appUser.getId(),
                     "username", appUser.getUsername(),
-                    // "email", appUser.getEmail(),
-                    "roles", roles
+                    "email", appUser.getEmail(),
+                    "full_name", appUser.getFull_name(),
+                    "roles", roles.stream().map(role -> role.getAuthority()).toList()
                 );
 
 

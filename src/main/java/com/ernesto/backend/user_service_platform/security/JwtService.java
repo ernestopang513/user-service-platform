@@ -26,7 +26,8 @@ public class JwtService {
             Map<String, Object> userData = Map.of(
                 "id", user.getId(),
                 "username", user.getUsername(),
-                // "email", user.getEmail(),
+                "email", user.getEmail(),
+                "full_name", user.getFull_name(),
                 "roles", user.getRoles().stream().map(Role::getName).toList()
             );
 

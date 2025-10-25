@@ -16,7 +16,7 @@ import com.ernesto.backend.user_service_platform.security.JwtService;
 
 
 @RestController
-@RequestMapping("/check-status")
+@RequestMapping("/api/auth/check-status")
 public class CheckStatusController {
 
     private final JwtService jwtService;
@@ -58,7 +58,8 @@ public class CheckStatusController {
         Map<String, Object> userData = Map.of(
             "id", user.getId(),
             "username", user.getUsername(),
-            // "email", user.getEmail(),
+            "email", user.getEmail(),
+            "full_name", user.getFull_name(),
             "roles", user.getRoles().stream().map(Role::getName).toList()
         );
 
