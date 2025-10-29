@@ -51,7 +51,8 @@ public class UserController {
                 admin.getId(),
                 admin.getUsername(),
                 admin.isActive(),
-                admin.getFull_name()
+                admin.getFull_name(),
+                admin.getEmail()
                 );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newAdmin);
