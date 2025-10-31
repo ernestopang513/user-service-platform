@@ -1,6 +1,7 @@
 package com.ernesto.backend.user_service_platform.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.OnDelete;
@@ -16,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -46,12 +48,15 @@ public class User {
 
     private boolean active = true;
 
-    @JsonIgnoreProperties({ "users", "handler", "hibernateLazyInitializer" })
-    @ManyToMany
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
-            @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
-    private List<Role> roles;
+    // @JsonIgnoreProperties({ "users", "handler", "hibernateLazyInitializer" })
+    // @ManyToMany
+    // @OnDelete(action = OnDeleteAction.CASCADE)
+    // @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
+    //         @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
+    // private List<Role> roles;
+
+    @OneToMany(mappedBy = "role")
+    private List<UserRole> userRoles = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
@@ -106,13 +111,13 @@ public class User {
         this.active = active;
     }
 
-    public List<Role> getRoles() {
-        return roles;
-    }
+    // public List<Role> getRoles() {
+    //     return roles;
+    // }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
+    // public void setRoles(List<Role> roles) {
+    //     this.roles = roles;
+    // }
 
     public LocalDateTime getCreated_at() {
         return created_at;
@@ -120,6 +125,19 @@ public class User {
 
     public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
+    }
+
+    public List<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
+
+    public void addRole(Role role) {
+        UserRole userRole = new UserRole(this, role);
+        this.userRoles.add(userRole);
     }
 
 }

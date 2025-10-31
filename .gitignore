@@ -33,3 +33,5 @@ build/
 .vscode/
 
 crud-app-mysql/
+
+service-platform-app/

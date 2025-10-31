@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ernesto.backend.user_service_platform.entities.Role;
 import com.ernesto.backend.user_service_platform.entities.User;
 import com.ernesto.backend.user_service_platform.repositories.UserRepository;
 import com.ernesto.backend.user_service_platform.security.JwtService;
@@ -60,7 +59,8 @@ public class CheckStatusController {
             "username", user.getUsername(),
             "email", user.getEmail(),
             "full_name", user.getFull_name(),
-            "roles", user.getRoles().stream().map(Role::getName).toList()
+            // "roles", user.getRoles().stream().map(Role::getName).toList()
+            "roles", user.getUserRoles().stream().map(userRole -> userRole.getRole().getName()).toList()
         );
 
 

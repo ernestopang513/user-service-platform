@@ -54,7 +54,8 @@ public class UserController {
                 admin.isActive(),
                 admin.getFull_name(),
                 admin.getEmail(),
-                admin.getRoles().stream().map(Role::getName).toList()
+                // admin.getRoles().stream().map(Role::getName).toList()
+                admin.getUserRoles().stream().map(userRole -> userRole.getRole().getName()).toList()
                 );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newAdmin);

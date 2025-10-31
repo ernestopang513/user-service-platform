@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ernesto.backend.user_service_platform.dtos.user.CreateUserDto;
 import com.ernesto.backend.user_service_platform.entities.Role;
 import com.ernesto.backend.user_service_platform.entities.User;
+import com.ernesto.backend.user_service_platform.entities.UserRole;
 import com.ernesto.backend.user_service_platform.exceptions.BadRequestException;
 import com.ernesto.backend.user_service_platform.exceptions.NotFoundException;
 import com.ernesto.backend.user_service_platform.repositories.RoleRepository;
@@ -43,10 +44,10 @@ public class UserServiceImp implements UserService {
             throw new BadRequestException("El nombre de usuario o correo ya estan en uso");
         }
 
-        Optional<Role> optRoleUser = roleRepository.findByName("ROLE_USER");
+        Role roleUser = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new NotFoundException("Role no encontrado"));
         List<Role> roles = new ArrayList<>();
 
-        optRoleUser.ifPresent(roles::add);
+        roles.add(roleUser);
 
         User user = new User();
 
@@ -54,7 +55,7 @@ public class UserServiceImp implements UserService {
         user.setEmail(createUserDto.getEmail());
         user.setFull_name(createUserDto.getFull_name());
         user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
-        user.setRoles(roles);
+        roles.forEach(user::addRole);
 
         return userRepository.save(user);
     }
@@ -66,16 +67,16 @@ public class UserServiceImp implements UserService {
             throw new BadRequestException("El nombre de usuario o correo ya estan en uso");
         }
 
-        Optional<Role> optRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
+        Role roleAdmin = roleRepository.findByName("ROLE_ADMIN").orElseThrow(() -> new NotFoundException("Role no encontrado"));
         List<Role> roles = new ArrayList<>();
-        optRoleAdmin.ifPresent(roles::add);
+        roles.add(roleAdmin);
 
         User user = new User();
         user.setUsername(createUserDto.getUsername());
         user.setEmail(createUserDto.getEmail());
         user.setFull_name(createUserDto.getFull_name());
         user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
-        user.setRoles(roles);
+        roles.forEach(itRole -> user.addRole(itRole));
 
         return userRepository.save(user);
     }

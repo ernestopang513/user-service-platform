@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.ernesto.backend.user_service_platform.entities.Role;
 import com.ernesto.backend.user_service_platform.entities.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,7 +27,8 @@ public class JwtService {
                 "username", user.getUsername(),
                 "email", user.getEmail(),
                 "full_name", user.getFull_name(),
-                "roles", user.getRoles().stream().map(Role::getName).toList()
+                // "roles", user.getRoles().stream().map(Role::getName).toList()
+                "roles", user.getUserRoles().stream().map(userRole -> userRole.getRole().getName()).toList()
             );
 
 
