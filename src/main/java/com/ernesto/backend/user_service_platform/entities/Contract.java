@@ -2,6 +2,8 @@ package com.ernesto.backend.user_service_platform.entities;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.ernesto.backend.user_service_platform.entities.enums.ContractStatus;
 import com.ernesto.backend.user_service_platform.listeners.ContractListener;
@@ -28,9 +30,11 @@ public class Contract {
     private Long id;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private ServiceEntity service;
 
     private LocalDateTime start_date;

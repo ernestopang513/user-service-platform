@@ -29,8 +29,8 @@ public class ServiceEntity {
 
     private boolean active = true;
 
-    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Contract> contracts = new ArrayList<>();
+    // @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<Contract> contracts = new ArrayList<>();
 
     public ServiceEntity() {
     }

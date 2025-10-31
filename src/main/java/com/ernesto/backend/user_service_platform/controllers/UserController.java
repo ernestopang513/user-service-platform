@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ernesto.backend.user_service_platform.dtos.user.CreateUserDto;
 import com.ernesto.backend.user_service_platform.dtos.user.UserResponseDto;
+import com.ernesto.backend.user_service_platform.entities.Role;
 import com.ernesto.backend.user_service_platform.entities.User;
 import com.ernesto.backend.user_service_platform.mapper.UserMapper;
 import com.ernesto.backend.user_service_platform.services.UserServiceImp;
@@ -52,7 +53,8 @@ public class UserController {
                 admin.getUsername(),
                 admin.isActive(),
                 admin.getFull_name(),
-                admin.getEmail()
+                admin.getEmail(),
+                admin.getRoles().stream().map(Role::getName).toList()
                 );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newAdmin);

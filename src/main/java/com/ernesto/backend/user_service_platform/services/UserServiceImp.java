@@ -97,13 +97,15 @@ public class UserServiceImp implements UserService {
     @Transactional
     public User update(CreateUserDto createUserDto, Long id) {
 
-        if (existsByUsername(createUserDto.getUsername())) {
-            throw new BadRequestException("El nombre de usuario ya está en uso");
+        if (existsByUsername(createUserDto.getUsername())||  userRepository.existsByEmail(createUserDto.getEmail())) {
+            throw new BadRequestException("El nombre de usuario o correo ya está en uso");
         }
 
         User user = findById(id);
 
         user.setUsername(createUserDto.getUsername());
+        user.setEmail(createUserDto.getEmail());
+        user.setFull_name(createUserDto.getFull_name());
 
         return userRepository.save(user);
 

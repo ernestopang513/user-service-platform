@@ -1,5 +1,8 @@
 package com.ernesto.backend.user_service_platform.dtos.user;
 
+import java.util.List;
+
+
 public class UserResponseDto {
 
     private Long id;
@@ -9,17 +12,19 @@ public class UserResponseDto {
 
     private String full_name;
 
-
+    private List<String> roles;
 
     public UserResponseDto() {
     }
     
-    public UserResponseDto(Long id, String username, boolean active, String full_name, String email) {
+    public UserResponseDto(Long id, String username, boolean active, String full_name, String email, List<String> roles) {
         this.id = id;
         this.username = username;
         this.active = active;
         this.full_name = full_name;
         this.email = email;
+        this.roles = roles;
+        
     }
     public Long getId() {
         return id;
@@ -54,6 +59,15 @@ public class UserResponseDto {
         this.full_name = full_name;
     }
 
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+  
     
 
 }

@@ -3,6 +3,9 @@ package com.ernesto.backend.user_service_platform.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -25,6 +28,7 @@ public class Role {
     private String name;
 
     @JsonIgnoreProperties({ "roles", "handler", "hibernateLazyInitializer" })
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 

@@ -15,7 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.ernesto.backend.user_service_platform.entities.Role;
 import com.ernesto.backend.user_service_platform.entities.User;
 import com.ernesto.backend.user_service_platform.repositories.UserRepository;
 import com.fasterxml.jackson.core.exc.StreamReadException;
