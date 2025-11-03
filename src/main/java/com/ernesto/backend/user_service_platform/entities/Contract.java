@@ -1,6 +1,8 @@
 package com.ernesto.backend.user_service_platform.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -8,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import com.ernesto.backend.user_service_platform.entities.enums.ContractStatus;
 import com.ernesto.backend.user_service_platform.listeners.ContractListener;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -17,6 +20,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
@@ -40,6 +44,9 @@ public class Contract {
     private LocalDateTime start_date;
 
     private LocalDateTime end_date;
+
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Invoice> invoices = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -97,6 +104,16 @@ public class Contract {
 
     public void setStatus(ContractStatus status) {
         this.status = status;
+    }
+
+    public void addInvoice(Invoice invoice) {
+        invoices.add(invoice);
+        invoice.setContract(this);
+    }
+
+    public void removeInvoice(Invoice invoice) {
+        invoices.remove(invoice);
+        invoice.setContract(null);
     }
 
     

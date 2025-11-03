@@ -15,12 +15,14 @@ ON DUPLICATE KEY UPDATE
 INSERT IGNORE INTO user_roles (user_id, role_id)
 SELECT u.id, r.id
 FROM users u, roles r
-WHERE u.username = 'admin' AND r.name = 'ROLE_ADMIN';
+WHERE u.username = 'admin' AND r.name = 'ROLE_ADMIN'
+ON DUPLICATE KEY UPDATE user_id = user_id;
 
 INSERT IGNORE INTO user_roles (user_id, role_id)
 SELECT u.id, r.id
 FROM users u, roles r
-WHERE u.username = 'admin' AND r.name = 'ROLE_USER';
+WHERE u.username = 'admin' AND r.name = 'ROLE_USER'
+ON DUPLICATE KEY UPDATE user_id = user_id;
 
 
 -- Insertar servicios

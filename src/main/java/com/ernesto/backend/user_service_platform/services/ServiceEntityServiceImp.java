@@ -1,6 +1,7 @@
 package com.ernesto.backend.user_service_platform.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,9 @@ public class ServiceEntityServiceImp implements ServiceService {
     @Override
     @Transactional(readOnly = false)
     public ServiceEntity update(UpdateServiceDto updateServiceDto, Long id) {
-        if (serviceRepository.existsByName(updateServiceDto.getName())) {
+
+        Optional<ServiceEntity> existingService = serviceRepository.findByName(updateServiceDto.getName());
+        if (serviceRepository.existsByName(updateServiceDto.getName()) && !existingService.get().getId().equals(id)) {
             throw new BadRequestException("El nombre del servicio ya esta en uso");
         }
 

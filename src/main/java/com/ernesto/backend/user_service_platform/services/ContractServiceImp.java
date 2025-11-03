@@ -40,9 +40,9 @@ public class ContractServiceImp implements ContractService{
         Contract contract = new Contract();
         contract.setUser(user);
         contract.setService(service);
-
-       
-            return contractRepository.save(contract);
+        
+        user.addContract(contract);
+        return contractRepository.save(contract);
     }
 
    

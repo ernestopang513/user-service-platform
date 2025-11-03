@@ -4,23 +4,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 
 @Entity
@@ -48,14 +41,10 @@ public class User {
 
     private boolean active = true;
 
-    // @JsonIgnoreProperties({ "users", "handler", "hibernateLazyInitializer" })
-    // @ManyToMany
-    // @OnDelete(action = OnDeleteAction.CASCADE)
-    // @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"), uniqueConstraints = {
-    //         @UniqueConstraint(columnNames = { "user_id", "role_id" }) })
-    // private List<Role> roles;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contract> contracts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserRole> userRoles = new ArrayList<>();
 
     @PrePersist
@@ -138,6 +127,16 @@ public class User {
     public void addRole(Role role) {
         UserRole userRole = new UserRole(this, role);
         this.userRoles.add(userRole);
+    }
+
+    public void addContract(Contract contract) {
+        contracts.add(contract);
+        contract.setUser(this);
+    }
+
+     public void removeContract(Contract contract) {
+        contracts.remove(contract);
+        contract.setUser(null);
     }
 
 }

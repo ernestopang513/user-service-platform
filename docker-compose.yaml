@@ -9,6 +9,6 @@ services:
       MYSQL_DATABASE: platform
       MYSQL_USER: ernest1
       MYSQL_PASSWORD: user123
-    container_name: backend-exam
+    container_name: platform-app
     volumes:
       - ./service-platform-app-mysql:/var/lib/mysql

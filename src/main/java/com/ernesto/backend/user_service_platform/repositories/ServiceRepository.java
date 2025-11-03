@@ -2,6 +2,7 @@ package com.ernesto.backend.user_service_platform.repositories;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +13,7 @@ public interface ServiceRepository extends JpaRepository<ServiceEntity, Long>{
     boolean existsByName(String name);
 
     List<ServiceEntity> findByActive(boolean active);
+
+    Optional<ServiceEntity> findByName(String name);
 
 }

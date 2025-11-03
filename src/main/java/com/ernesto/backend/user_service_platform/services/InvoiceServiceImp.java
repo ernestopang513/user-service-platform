@@ -42,7 +42,12 @@ public class InvoiceServiceImp implements InvoiceService {
 
         BigDecimal amount = contract.getService().getPrice();
 
-        Invoice invoice = new Invoice(contract, amount);
+        
+        Invoice invoice = new Invoice();
+
+        invoice.setAmount(amount);
+        
+        contract.addInvoice(invoice);
 
         return invoiceRepository.save(invoice);
     }
@@ -71,6 +76,7 @@ public class InvoiceServiceImp implements InvoiceService {
     @Override
     public void remove(Long id) {
         findById(id);
+
         invoiceRepository.deleteById(id);
     }
 
