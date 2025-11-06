@@ -28,6 +28,9 @@ public class ContractServiceImp implements ContractService{
     @Autowired
     private ServiceRepository serviceRepository;
 
+    @Autowired
+    private InvoiceService invoiceService;
+
 
     @Override
     public Contract save(CreateContractDto createContractDto) {
@@ -42,6 +45,9 @@ public class ContractServiceImp implements ContractService{
         contract.setService(service);
         
         user.addContract(contract);
+
+
+
         return contractRepository.save(contract);
     }
 

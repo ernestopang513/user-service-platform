@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ernesto.backend.user_service_platform.dtos.invoice.UpdateInvoiceStatusDto;
 import com.ernesto.backend.user_service_platform.entities.Contract;
 import com.ernesto.backend.user_service_platform.entities.Invoice;
 import com.ernesto.backend.user_service_platform.entities.enums.InvoiceStatus;
@@ -59,9 +60,9 @@ public class InvoiceServiceImp implements InvoiceService {
     }
 
     @Override
-    public Invoice update(Invoice invoice, Long id) {
+    public Invoice update(UpdateInvoiceStatusDto status, Long id) {
         Invoice invoiceDb = findById(id);
-        invoiceDb.setAmount(invoice.getAmount());
+        invoiceDb.setStatus(status.getStatus());
 
         return invoiceRepository.save(invoiceDb);
     }
