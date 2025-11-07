@@ -46,9 +46,15 @@ public class ContractServiceImp implements ContractService{
         
         user.addContract(contract);
 
+        Contract dbContract = contractRepository.save(contract);
+
+        invoiceService.save(dbContract.getId());
+
+        return dbContract;
 
 
-        return contractRepository.save(contract);
+
+
     }
 
    
